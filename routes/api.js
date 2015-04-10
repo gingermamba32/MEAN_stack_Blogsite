@@ -1,5 +1,7 @@
+//MONGOOSE.js file ... will be used to create 
+
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://localhost/test');  //connect to the database
 var express = require('express');
 var router = express.Router();              // get an instance of the express Router
 
@@ -14,6 +16,8 @@ db.once('open', function (callback) {
 	})
 	var User = mongoose.model('User', userSchema);
 
+
+    // dont need to make a post schema
 	var postSchema = mongoose.Schema({
 		author: String,
 		text: String
@@ -25,6 +29,7 @@ db.once('open', function (callback) {
 		next();
 	});
 
+     //delete doesnt work
 	router.post('/delete', function(req, res) {
 	    Post.findOneAndRemove({"_id": 'ObjectId("54f0feaf3d0a17730bd8375a")'}, function (err, post) {
 	    	console.log(post);
@@ -32,12 +37,16 @@ db.once('open', function (callback) {
 	    });
 	});
 
+	//not needed
 	router.get('/posts', function(req, res) {
 	    Post.find(function (err, posts) {
 	    	res.json(posts);
 	    }); 
 	});
-
+ 	
+ 	
+ 	//*************************************
+ 	//register 
 	router.post('/register', function(req, res) {
 		User.find(function (err, users) {
 			if (!users.some(function (elem) {
@@ -57,7 +66,7 @@ db.once('open', function (callback) {
 			}
 		});	
 	});
-
+	
 	router.post('/login', function(req, res) {
 		User.find(function (err, users) {
 			if (users.some(function (elem) {
@@ -71,9 +80,9 @@ db.once('open', function (callback) {
 			}
 		});	
 	});
+	//****************************************
 
-
-
+    //not needed
 	router.post('/makePost', function(req, res) {
 		var newPost = new Post(req.body);
 		newPost.save(function (err, newPost) {
@@ -82,6 +91,7 @@ db.once('open', function (callback) {
 		});
 	});
 
+	//not needed
 	router.get('/getPosts', function(req, res) {
 		Post.find(function (err, posts) {
 			res.json(posts);
